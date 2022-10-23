@@ -1,6 +1,6 @@
 package br.com.sicredi.desafio.repository.entity;
 
-import br.com.sicredi.desafio.repository.common.enums.RuleStatus;
+import br.com.sicredi.desafio.repository.common.enums.RuleVotingSessionStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -36,5 +36,5 @@ public class RuleVotingSession implements Serializable {
     private LocalDateTime endDate;
 
     @Enumerated(EnumType.STRING)
-    private RuleStatus status;
+    private RuleVotingSessionStatus status;
 }

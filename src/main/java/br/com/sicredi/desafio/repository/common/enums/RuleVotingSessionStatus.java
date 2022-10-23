@@ -1,5 +1,5 @@
 package br.com.sicredi.desafio.repository.common.enums;
 
-public enum RuleStatus {
+public enum RuleVotingSessionStatus {
     OPEN, CLOSED
 }
