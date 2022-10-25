@@ -2,7 +2,6 @@ package br.com.sicredi.desafio.controller;
 
 import br.com.sicredi.desafio.repository.AssociateRepository;
 import br.com.sicredi.desafio.repository.entity.Associate;
-import br.com.sicredi.desafio.repository.entity.Rule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 
 import static br.com.sicredi.desafio.mother.AssociateMother.getAssociate;
-import static br.com.sicredi.desafio.mother.RuleMother.getRule;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

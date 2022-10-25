@@ -1,7 +1,6 @@
 package br.com.sicredi.desafio.mother;
 
 import br.com.sicredi.desafio.repository.entity.Associate;
-import br.com.sicredi.desafio.repository.entity.Rule;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

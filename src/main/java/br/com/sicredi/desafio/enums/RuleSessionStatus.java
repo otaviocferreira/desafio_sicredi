@@ -1,5 +1,5 @@
 package br.com.sicredi.desafio.enums;
 
-public enum RuleVotingSessionStatus {
+public enum RuleSessionStatus {
     OPEN, CLOSED
 }

@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -22,14 +21,14 @@ import java.util.Set;
 public class Rule implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "session_id", referencedColumnName = "id")
-    private RuleVotingSession session;
+    private RuleSession session;
 
     @OneToMany(mappedBy = "rule")
     private Set<Vote> votes;

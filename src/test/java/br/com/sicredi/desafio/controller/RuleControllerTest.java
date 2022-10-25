@@ -1,28 +1,18 @@
 package br.com.sicredi.desafio.controller;
 
 import br.com.sicredi.desafio.repository.RuleRepository;
-import br.com.sicredi.desafio.repository.RuleVotingSessionRepository;
+import br.com.sicredi.desafio.repository.RuleSessionRepository;
 import br.com.sicredi.desafio.repository.entity.Rule;
-import br.com.sicredi.desafio.repository.entity.RuleVotingSession;
-import com.fasterxml.jackson.core.type.TypeReference;
+import br.com.sicredi.desafio.repository.entity.RuleSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.aspectj.lang.annotation.Before;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -50,7 +40,7 @@ public class RuleControllerTest {
     private RuleRepository ruleRepository;
 
     @MockBean
-    private RuleVotingSessionRepository ruleVotingSessionRepository;
+    private RuleSessionRepository ruleSessionRepository;
 
     @Test
     public void getSimpleRule() throws Exception {
@@ -73,10 +63,10 @@ public class RuleControllerTest {
     @Test
     public void startRuleVotingSession() throws Exception {
         Rule rule = getRule();
-        RuleVotingSession ruleVotingSession = getRuleVotingSession();
+        RuleSession ruleSession = getRuleVotingSession();
 
         when(ruleRepository.findById(1L)).thenReturn(Optional.of(rule));
-        when(ruleVotingSessionRepository.save(any(RuleVotingSession.class))).thenReturn(ruleVotingSession);
+        when(ruleSessionRepository.save(any(RuleSession.class))).thenReturn(ruleSession);
 
         MockHttpServletResponse response = mvc.perform(MockMvcRequestBuilders.post("/api/v1/rules/1/start-session")
                         .content(mapper.writeValueAsBytes(getStartingSessionRequest()))
@@ -84,10 +74,10 @@ public class RuleControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn().getResponse();
 
-        RuleVotingSession ruleResponse = mapper.readValue(response.getContentAsByteArray(), RuleVotingSession.class);
+        RuleSession ruleResponse = mapper.readValue(response.getContentAsByteArray(), RuleSession.class);
 
         assertThat(ruleResponse).isNotNull();
         assertThat(ruleResponse.getRule()).isNotNull();
-        assertThat(ruleResponse.getRule().getId()).isEqualTo(ruleVotingSession.getRule().getId());
+        assertThat(ruleResponse.getRule().getId()).isEqualTo(ruleSession.getRule().getId());
     }
 }

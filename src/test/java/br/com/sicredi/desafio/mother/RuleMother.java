@@ -2,11 +2,10 @@ package br.com.sicredi.desafio.mother;
 
 import br.com.sicredi.desafio.controller.request.StartingSessionRequest;
 import br.com.sicredi.desafio.repository.entity.Rule;
-import br.com.sicredi.desafio.repository.entity.RuleVotingSession;
+import br.com.sicredi.desafio.repository.entity.RuleSession;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -21,13 +20,13 @@ public class RuleMother {
         return rule;
     }
 
-    public static RuleVotingSession getRuleVotingSession() {
-        RuleVotingSession ruleVotingSession = new RuleVotingSession();
+    public static RuleSession getRuleVotingSession() {
+        RuleSession ruleSession = new RuleSession();
 
-        ruleVotingSession.setId(1L);
-        ruleVotingSession.setRule(getRule());
+        ruleSession.setId(1L);
+        ruleSession.setRule(getRule());
 
-        return ruleVotingSession;
+        return ruleSession;
     }
 
     public static StartingSessionRequest getStartingSessionRequest() {
