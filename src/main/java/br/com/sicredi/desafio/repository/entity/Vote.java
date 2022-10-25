@@ -1,6 +1,6 @@
 package br.com.sicredi.desafio.repository.entity;
 
-import br.com.sicredi.desafio.repository.common.enums.VoteOption;
+import br.com.sicredi.desafio.enums.VoteOption;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

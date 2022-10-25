@@ -1,4 +1,4 @@
-package br.com.sicredi.desafio.repository.common.enums;
+package br.com.sicredi.desafio.enums;
 
 public enum RuleVotingSessionStatus {
     OPEN, CLOSED
