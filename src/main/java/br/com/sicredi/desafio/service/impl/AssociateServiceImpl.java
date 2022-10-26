@@ -1,5 +1,6 @@
 package br.com.sicredi.desafio.service.impl;
 
+import br.com.sicredi.desafio.exception.NotFoundException;
 import br.com.sicredi.desafio.service.dto.AssociateDto;
 import br.com.sicredi.desafio.mapper.AssociateMapper;
 import br.com.sicredi.desafio.repository.AssociateRepository;
@@ -30,7 +31,7 @@ public class AssociateServiceImpl implements AssociateService {
         log.info("Getting associate with id {}.", id);
 
         Associate associate = associateRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found!"));
+                .orElseThrow(() -> new NotFoundException("Associate not found!"));
 
         return mapper.entityToDto(associate);
     }

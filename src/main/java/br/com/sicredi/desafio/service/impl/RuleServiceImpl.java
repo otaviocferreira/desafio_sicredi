@@ -1,6 +1,7 @@
 package br.com.sicredi.desafio.service.impl;
 
 import br.com.sicredi.desafio.enums.VoteOption;
+import br.com.sicredi.desafio.exception.NotFoundException;
 import br.com.sicredi.desafio.mapper.RuleMapper;
 import br.com.sicredi.desafio.mapper.RuleSessionMapper;
 import br.com.sicredi.desafio.mapper.VoteMapper;
@@ -51,7 +52,7 @@ public class RuleServiceImpl implements RuleService {
         log.info("Getting rule with ID {}.", id);
 
         Rule ruleDB = ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found!"));
+                .orElseThrow(() -> new NotFoundException("Rule not found!"));
 
         return ruleMapper.entityToDto(ruleDB);
     }
@@ -61,7 +62,7 @@ public class RuleServiceImpl implements RuleService {
         log.info("Starting voting session to rule with ID {}.", id);
 
         Rule rule = ruleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rule not found!"));
+                .orElseThrow(() -> new NotFoundException("Rule not found!"));
 
         RuleSessionDto savedRuleSession = ruleSessionService.startVotingSession(session);
 
