@@ -3,7 +3,7 @@ package br.com.sicredi.desafio.controller;
 import br.com.sicredi.desafio.controller.request.RuleRequest;
 import br.com.sicredi.desafio.controller.request.StartingSessionRequest;
 import br.com.sicredi.desafio.controller.response.RuleResponse;
-import br.com.sicredi.desafio.dto.RuleDto;
+import br.com.sicredi.desafio.service.dto.RuleDto;
 import br.com.sicredi.desafio.mapper.RuleMapper;
 import br.com.sicredi.desafio.service.RuleService;
 import lombok.RequiredArgsConstructor;

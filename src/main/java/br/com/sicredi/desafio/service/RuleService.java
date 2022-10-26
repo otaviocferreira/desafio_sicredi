@@ -1,7 +1,7 @@
 package br.com.sicredi.desafio.service;
 
-import br.com.sicredi.desafio.dto.RuleDto;
-import br.com.sicredi.desafio.dto.RuleSessionDto;
+import br.com.sicredi.desafio.service.dto.RuleDto;
+import br.com.sicredi.desafio.service.dto.RuleSessionDto;
 
 public interface RuleService {
 
@@ -10,4 +10,8 @@ public interface RuleService {
     RuleDto get(Long id);
 
     RuleDto startVotingSession(Long id, RuleSessionDto session);
+
+    void countRuleResult(RuleDto ruleDto);
+
+    void endVotingSession(RuleSessionDto sessionDto);
 }

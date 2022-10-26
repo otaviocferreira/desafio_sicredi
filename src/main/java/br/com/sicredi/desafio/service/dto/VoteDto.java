@@ -1,5 +1,6 @@
-package br.com.sicredi.desafio.dto;
+package br.com.sicredi.desafio.service.dto;
 
+import br.com.sicredi.desafio.enums.VoteOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -15,11 +16,11 @@ import lombok.ToString;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class AssociateDto {
+public class VoteDto {
 
-    private Long id;
+    private Long idRule;
 
-    private String document;
+    private Long idAssociate;
 
-    private String name;
+    private VoteOption option;
 }

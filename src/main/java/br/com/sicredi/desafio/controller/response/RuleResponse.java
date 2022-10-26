@@ -1,5 +1,6 @@
 package br.com.sicredi.desafio.controller.response;
 
+import br.com.sicredi.desafio.enums.VoteOption;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,6 @@ public class RuleResponse {
     private String name;
 
     private RuleSessionResponse session;
+
+    private VoteOption result;
 }

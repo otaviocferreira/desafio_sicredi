@@ -1,7 +1,7 @@
 package br.com.sicredi.desafio.mapper;
 
 import br.com.sicredi.desafio.controller.request.VoteRequest;
-import br.com.sicredi.desafio.dto.VoteDto;
+import br.com.sicredi.desafio.service.dto.VoteDto;
 import br.com.sicredi.desafio.repository.entity.Vote;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

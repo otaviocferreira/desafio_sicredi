@@ -1,5 +1,5 @@
 package br.com.sicredi.desafio.enums;
 
 public enum VoteOption {
-    YES, NO
+    YES, NO, DRAW
 }

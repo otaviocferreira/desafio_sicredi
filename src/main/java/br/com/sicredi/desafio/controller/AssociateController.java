@@ -2,7 +2,7 @@ package br.com.sicredi.desafio.controller;
 
 import br.com.sicredi.desafio.controller.request.AssociateRequest;
 import br.com.sicredi.desafio.controller.response.AssociateResponse;
-import br.com.sicredi.desafio.dto.AssociateDto;
+import br.com.sicredi.desafio.service.dto.AssociateDto;
 import br.com.sicredi.desafio.mapper.AssociateMapper;
 import br.com.sicredi.desafio.service.AssociateService;
 import lombok.RequiredArgsConstructor;

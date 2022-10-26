@@ -1,6 +1,6 @@
 package br.com.sicredi.desafio.service;
 
-import br.com.sicredi.desafio.dto.AssociateDto;
+import br.com.sicredi.desafio.service.dto.AssociateDto;
 
 public interface AssociateService {
 

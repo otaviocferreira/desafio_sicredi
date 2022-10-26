@@ -1,5 +1,6 @@
-package br.com.sicredi.desafio.dto;
+package br.com.sicredi.desafio.service.dto;
 
+import br.com.sicredi.desafio.enums.RuleSessionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,11 +18,15 @@ import lombok.ToString;
 @Builder
 @ToString
 @EqualsAndHashCode
-public class RuleDto {
+public class RuleSessionDto {
 
     private Long id;
 
-    private String name;
+    private LocalDateTime startDate;
 
-    private RuleSessionDto session;
+    private LocalDateTime endDate;
+
+    private RuleSessionStatus status;
+
+    private String duration;
 }

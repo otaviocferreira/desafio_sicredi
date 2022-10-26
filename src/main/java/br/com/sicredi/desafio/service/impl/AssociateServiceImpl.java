@@ -1,6 +1,6 @@
 package br.com.sicredi.desafio.service.impl;
 
-import br.com.sicredi.desafio.dto.AssociateDto;
+import br.com.sicredi.desafio.service.dto.AssociateDto;
 import br.com.sicredi.desafio.mapper.AssociateMapper;
 import br.com.sicredi.desafio.repository.AssociateRepository;
 import br.com.sicredi.desafio.repository.entity.Associate;

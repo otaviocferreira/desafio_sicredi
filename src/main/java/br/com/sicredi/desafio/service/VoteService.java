@@ -1,6 +1,6 @@
 package br.com.sicredi.desafio.service;
 
-import br.com.sicredi.desafio.dto.VoteDto;
+import br.com.sicredi.desafio.service.dto.VoteDto;
 
 public interface VoteService {
 
