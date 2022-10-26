@@ -1,111 +1,112 @@
 package br.com.sicredi.desafio.service.impl;
 
-import br.com.sicredi.desafio.service.dto.RuleDto;
-import br.com.sicredi.desafio.service.dto.RuleSessionDto;
+import br.com.sicredi.desafio.enums.VoteOption;
 import br.com.sicredi.desafio.mapper.RuleMapper;
+import br.com.sicredi.desafio.mapper.RuleSessionMapper;
+import br.com.sicredi.desafio.mapper.VoteMapper;
 import br.com.sicredi.desafio.repository.RuleRepository;
-import br.com.sicredi.desafio.repository.RuleSessionRepository;
 import br.com.sicredi.desafio.repository.entity.Rule;
 import br.com.sicredi.desafio.repository.entity.RuleSession;
 import br.com.sicredi.desafio.service.RuleService;
+import br.com.sicredi.desafio.service.RuleSessionService;
+import br.com.sicredi.desafio.service.VoteService;
+import br.com.sicredi.desafio.service.dto.RuleDto;
+import br.com.sicredi.desafio.service.dto.RuleSessionDto;
+import br.com.sicredi.desafio.service.dto.VoteDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.Set;
 
-import static br.com.sicredi.desafio.enums.RuleSessionStatus.CLOSED;
-import static br.com.sicredi.desafio.enums.RuleSessionStatus.OPEN;
-import static br.com.sicredi.desafio.enums.VoteOption.DRAW;
-import static br.com.sicredi.desafio.enums.VoteOption.NO;
-import static br.com.sicredi.desafio.enums.VoteOption.YES;
+import static java.util.stream.Collectors.toSet;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class RuleServiceImpl implements RuleService {
 
     private final RuleRepository ruleRepository;
 
-    private final RuleSessionRepository ruleSessionRepository;
+    private final RuleSessionService ruleSessionService;
 
-    private final RuleMapper mapper;
+    private final VoteService voteService;
+
+    private final RuleMapper ruleMapper;
+
+    private final RuleSessionMapper ruleSessionMapper;
+
+    private final VoteMapper voteMapper;
 
     @Override
     public RuleDto create(RuleDto rule) {
-
-        return mapper.entityToDto(ruleRepository.save(mapper.dtoToEntity(rule)));
+        log.info("Creating new {}.", rule);
+        return ruleMapper.entityToDto(ruleRepository.save(ruleMapper.dtoToEntity(rule)));
     }
 
     @Override
     public RuleDto get(Long id) {
+        log.info("Getting rule with ID {}.", id);
+
         Rule ruleDB = ruleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rule not found!"));
 
-        return mapper.entityToDto(ruleDB);
+        return ruleMapper.entityToDto(ruleDB);
     }
 
     @Override
     public RuleDto startVotingSession(Long id, RuleSessionDto session) {
-        RuleSession ruleSession = new RuleSession();
+        log.info("Starting voting session to rule with ID {}.", id);
 
         Rule rule = ruleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Rule not found!"));
 
-        LocalDateTime startDate = Objects.nonNull(session.getStartDate()) ? session.getStartDate() : LocalDateTime.now();
-        Duration durationSent = Objects.nonNull(session.getDuration()) ? Duration.parse(session.getDuration()) : Duration.parse("PT1M");
+        RuleSessionDto savedRuleSession = ruleSessionService.startVotingSession(session);
 
-        ruleSession.setStatus(OPEN);
-        ruleSession.setStartDate(startDate);
-        ruleSession.setEndDate(startDate.plus(durationSent));
+        rule.setSession(ruleSessionMapper.dtoToEntity(savedRuleSession));
 
-        RuleSession savedRuleSession = ruleSessionRepository.save(ruleSession);
-
-        rule.setSession(savedRuleSession);
-
-        return mapper.entityToDto(ruleRepository.save(rule));
+        return ruleMapper.entityToDto(ruleRepository.save(rule));
     }
 
-    @Override
-    public void countRuleResult(RuleDto ruleDto) {
-        Optional<Rule> rule = ruleRepository.findById(ruleDto.getId());
+    private Rule countRuleResult(Rule rule) {
+        log.info("Getting voting results to rule {}.", rule);
+        getResult(rule);
+        return ruleRepository.save(rule);
+    }
 
-        rule.ifPresent(ruleDB -> {
-            getResult(ruleDB);
-            ruleRepository.save(ruleDB);
-        });
+    @Transactional
+    @Override
+    public Set<RuleDto> closeExpiredSessions() {
+        log.info("Closing expired sessions.");
+
+        Set<RuleSessionDto> sessionsDto = ruleSessionService.closeExpiredSessions();
+
+        Set<RuleSession> sessions = sessionsDto.stream()
+                .map(ruleSessionMapper::dtoToEntity)
+                .collect(toSet());
+
+        Collection<Rule> closedRules = ruleRepository.findBySessionIn(sessions);
+
+        return closedRules
+                .stream()
+                .map(this::countRuleResult)
+                .map(ruleMapper::entityToDto)
+                .collect(toSet());
     }
 
     private void getResult(Rule ruleDB) {
-        AtomicInteger yesVote = new AtomicInteger();
-        AtomicInteger noVote = new AtomicInteger();
+        log.info("Calculating the results to {} ...", ruleDB);
 
-        ruleDB.getVotes().forEach(vote -> {
-            if (vote.getOption().equals(YES)) {
-                yesVote.getAndIncrement();
-            } else {
-                noVote.getAndIncrement();
-            }
-        });
+        Set<VoteDto> votes = ruleDB.getVotes().stream()
+                .map(voteMapper::entityToDto)
+                .collect(toSet());
 
-        if (yesVote.get() > noVote.get()) {
-            ruleDB.setResult(YES);
-        } else if (yesVote.get() < noVote.get()) {
-            ruleDB.setResult(NO);
-        } else {
-            ruleDB.setResult(DRAW);
-        }
-    }
+        VoteOption result = voteService.getResult(votes);
 
-    @Override
-    public void endVotingSession(RuleSessionDto sessionDto) {
-        Optional<RuleSession> session = ruleSessionRepository.findById(sessionDto.getId());
+        ruleDB.setResult(result);
 
-        session.ifPresent(sessionDB -> {
-            sessionDB.setStatus(CLOSED);
-            ruleSessionRepository.save(sessionDB);
-        });
+        log.info("The result is {} ...", ruleDB.getResult());
     }
 }

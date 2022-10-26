@@ -3,6 +3,8 @@ package br.com.sicredi.desafio.service;
 import br.com.sicredi.desafio.service.dto.RuleDto;
 import br.com.sicredi.desafio.service.dto.RuleSessionDto;
 
+import java.util.Set;
+
 public interface RuleService {
 
     RuleDto create(RuleDto rule);
@@ -11,7 +13,5 @@ public interface RuleService {
 
     RuleDto startVotingSession(Long id, RuleSessionDto session);
 
-    void countRuleResult(RuleDto ruleDto);
-
-    void endVotingSession(RuleSessionDto sessionDto);
+    Set<RuleDto> closeExpiredSessions();
 }

@@ -13,6 +13,8 @@ import java.util.Optional;
 public class NoDuplicatedVote {
 
     public static boolean test(RuleDto ruleDto, AssociateDto associateDto, VoteRepository repository) {
+        log.info("Validating if the vote is not duplicated.");
+
         VoteKey voteKey = VoteKey.builder()
                 .ruleId(ruleDto.getId())
                 .associateId(associateDto.getId())

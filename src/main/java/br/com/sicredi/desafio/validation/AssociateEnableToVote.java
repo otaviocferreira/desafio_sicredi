@@ -13,9 +13,12 @@ import static br.com.sicredi.desafio.client.enums.AssociateStatus.ABLE_TO_VOTE;
 public class AssociateEnableToVote {
 
     public static boolean test(AssociateDto associateDto, ValidateAssociateWebClient webClient) {
+        log.info("Validating if the associate is enable to vote.");
+
         Optional<AssociateStatusResponse> associateStatusToVote = webClient.getAssociateStatusToVote(associateDto);
 
         return associateStatusToVote.map(associateStatusResponse ->
-                associateStatusResponse.getStatus().equals(ABLE_TO_VOTE)).orElse(false);
+                associateStatusResponse.getStatus().equals(ABLE_TO_VOTE))
+                .orElse(false);
     }
 }

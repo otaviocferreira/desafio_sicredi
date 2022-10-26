@@ -10,3 +10,10 @@ spring:
     defer-datasource-initialization: true
   h2:
     console.enabled: true
+
+logging:
+  level:
+    root: INFO
+    br.com.sicredi.desafio: DEBUG
+
+close_session_schedule: 0/10 * * * * ?

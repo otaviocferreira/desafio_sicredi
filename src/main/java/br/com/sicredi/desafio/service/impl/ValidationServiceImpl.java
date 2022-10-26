@@ -26,6 +26,8 @@ public class ValidationServiceImpl implements ValidationService {
 
     @Override
     public void validate(RuleDto ruleDto, AssociateDto associateDto) {
+        log.info("Starting validate vote.");
+
         boolean statusOpenToVote = false;
         boolean endDateInTimeToVote = false;
         boolean noDuplicatedVote = NoDuplicatedVote.test(ruleDto, associateDto, voteRepository);
@@ -39,6 +41,10 @@ public class ValidationServiceImpl implements ValidationService {
         if (statusOpenToVote && endDateInTimeToVote && noDuplicatedVote && associateEnableToVote) {
             log.info("The associate {} can vote on '{}' rule.", associateDto.getDocument(), ruleDto.getName());
         } else {
+            log.debug("statusOpenToVote -> {}", statusOpenToVote);
+            log.debug("endDateInTimeToVote -> {}", endDateInTimeToVote);
+            log.debug("noDuplicatedVote -> {}", noDuplicatedVote);
+            log.debug("associateEnableToVote -> {}", associateEnableToVote);
             throw new RuntimeException("This vote is invalid.");
         }
     }
