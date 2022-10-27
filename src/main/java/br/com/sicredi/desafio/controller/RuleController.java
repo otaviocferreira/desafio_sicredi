@@ -35,7 +35,7 @@ public class RuleController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<RuleResponse> getRule(@PathVariable Long id) {
+    public ResponseEntity<RuleResponse> startSession(@PathVariable Long id) {
         MDC.put("correlation_id", UUID.randomUUID().toString());
         return ResponseEntity.ok(ruleMapper.dtoToResponse(ruleService.get(id)));
     }
@@ -50,7 +50,7 @@ public class RuleController {
 
     @PostMapping(path = "/{id}/start-session", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> getRule(@PathVariable Long id, @RequestBody StartingSessionRequest startingSession) {
+    public ResponseEntity<?> startSession(@PathVariable Long id, @RequestBody StartingSessionRequest startingSession) {
         MDC.put("correlation_id", UUID.randomUUID().toString());
         RuleDto dto = ruleService.startVotingSession(id, ruleSessionMapper.requestToDto(startingSession));
         return ResponseEntity.status(HttpStatus.CREATED).body(ruleMapper.dtoToResponse(dto));
